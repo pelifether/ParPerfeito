@@ -1,6 +1,7 @@
 import React from 'react';
 import Calculator from './components/Calculator';
 import BackgroundAnimation from './components/BackgroundAnimation';
+import FAQ from './components/FAQ';
 import './App.css';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
           Qual a chance de encontrar seu par ideal? 💕
         </h1>
         <Calculator />
+        <FAQ />
       </div>
     </div>
   );

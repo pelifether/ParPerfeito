@@ -74,7 +74,7 @@ const InputPanel = ({ filters, onChange, onSubmit }) => {
           animation: 'gradient 2s ease-in-out infinite'
         }}
       >
-        Descubra
+        Descubra 🔎
       </button>
 
       <div>
