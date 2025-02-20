@@ -127,88 +127,112 @@ const ResultsPanel = ({ results, showResults, onPresetClick }) => {
     const [cityData, setCityData] = useState(null);
 
     useEffect(() => {
-        if (showResults && results) {
-            console.log('Fetching location data...');  // Debug log
-            getUserLocation().then(location => {
-                console.log('Location data received:', location);  // Debug log
-                if (location) {
+        async function fetchLocation() {
+            if (showResults && results) {
+                console.log('Fetching location...');
+                try {
+                    const location = await getUserLocation();
+                    console.log('Location received:', location);
                     setCityData(location);
+                } catch (error) {
+                    console.error('Error fetching location:', error);
                 }
-            });
+            }
         }
+        
+        fetchLocation();
     }, [showResults, results]);
 
-  // Always show at least one person if there's any chance at all
-  const filledCount = results.percentage > 0 
-    ? Math.max(1, Math.round((results.percentage * 100) / 100))
-    : 0;
-  const icons = Array.from({ length: 100 }, (_, i) => i < filledCount);
+    // Debugging log
+    useEffect(() => {
+        console.log('Current cityData:', cityData);
+        console.log('Current results:', results);
+    }, [cityData, results]);
 
-  return (
-    <div className="relative">
-      <AnimatePresence mode="wait">
-        {showResults ? (
-          <>
-            <motion.div
-              key="results"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1 }}
-              className="space-y-4"
-            >
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-5xl font-bold text-blue-600">
-                  {formatPercentage(results.percentage)}%
-                </p>
-                <p className="text-gray-600">
-                  da população brasileira corresponde aos seus critérios
-                </p>
-              </div>
+    // Always show at least one person if there's any chance at all
+    const filledCount = results.percentage > 0 
+        ? Math.max(1, Math.round((results.percentage * 100) / 100))
+        : 0;
+    const icons = Array.from({ length: 100 }, (_, i) => i < filledCount);
 
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-gray-600">
-                  Você tem {results.matchCount.toLocaleString()} chances de encontrar 
-                  seu par perfeito entre {results.totalCount.toLocaleString()} brasileiros 🇧🇷
-                </p>
-              </div>
+    return (
+        <div className="relative">
+            <AnimatePresence mode="wait">
+                {showResults && results ? (
+                    <>
+                        <motion.div
+                            key="results"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 1 }}
+                            className="space-y-6"
+                        >
+                            <div className="bg-blue-50 p-4 rounded-lg">
+                                <p className="text-5xl font-bold text-blue-600">
+                                    {formatPercentage(results.percentage)}%
+                                </p>
+                                <p className="text-gray-600">
+                                    da população brasileira corresponde aos seus critérios
+                                </p>
+                            </div>
 
-              <div className="grid grid-cols-10 gap-1 max-w-[400px]">
-                {icons.map((isMatched, index) => (
-                  <div 
-                    key={index}
-                    className={isMatched ? 'text-lg text-center text-blue-600' : 'text-lg text-center text-blue-600/40'}
-                  >
-                    👤
-                  </div>
-                ))}
-              </div>
-              
-              <p className="text-xs text-gray-500">
-                Fonte:{' '}
-                <a 
-                    href="https://www.ibge.gov.br/estatisticas/sociais/populacao/9171-pesquisa-nacional-por-amostra-de-domicilios-continua-mensal.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline hover:text-gray-700"
-                >
-                    IBGE - Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD) 2023
-                </a>
-              </p>
-            </motion.div>
-            <HeartAnimation />
-          </>
-        ) : (
-          <motion.div
-            key="initial"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <InitialState onPresetClick={onPresetClick} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+                            <div className="bg-blue-50 p-4 rounded-lg">
+                                <p className="text-gray-600">
+                                    Você tem {results.matchCount.toLocaleString()} chances de encontrar 
+                                    seu par perfeito entre {results.totalCount.toLocaleString()} brasileiros 🇧🇷
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-10 gap-1 max-w-[400px] mb-6">
+                                {Array.from({ length: 100 }, (_, i) => (
+                                    <div 
+                                        key={i}
+                                        className={i < results.percentage ? 'text-lg text-center text-blue-600' : 'text-lg text-center text-blue-600/40'}
+                                    >
+                                        👤
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* City Results */}
+                            {cityData && results && (
+                                <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+                                    <p className="text-gray-600">
+                                        Na sua cidade, {cityData.city}-{cityData.state}, existem aprox.{' '}
+                                        <span className="font-semibold">
+                                            {Math.round((cityData.population * results.percentage) / 100).toLocaleString()}
+                                        </span>{' '}
+                                        pessoas que podem ser seu par ideal 📍
+                                    </p>
+                                </div>
+                            )}
+
+                            <p className="text-xs text-gray-500">
+                                Fonte:{' '}
+                                <a 
+                                    href="https://www.ibge.gov.br/estatisticas/sociais/populacao/9171-pesquisa-nacional-por-amostra-de-domicilios-continua-mensal.html"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="underline hover:text-gray-700"
+                                >
+                                    IBGE - Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD) 2023
+                                </a>
+                            </p>
+                        </motion.div>
+                        <HeartAnimation />
+                    </>
+                ) : (
+                    <motion.div
+                        key="initial"
+                        initial={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <InitialState onPresetClick={onPresetClick} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
 };
 
 export default ResultsPanel;

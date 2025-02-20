@@ -1,42 +1,50 @@
 export async function getUserLocation() {
     try {
-        const response = await fetch('https://ipapi.co/json/', {
-            mode: 'cors',
+        console.log('Fetching location from ipapi...');
+        // Using the JSONP endpoint which supports CORS
+        const response = await fetch('https://ipapi.co/json/?callback=?', {
             headers: {
                 'Accept': 'application/json',
-                'User-Agent': 'Mozilla/5.0'
-            }
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors' // Explicitly set CORS mode
         });
         
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            console.log('API response not ok, using fallback');
+            return getFallbackLocation();
         }
         
-        const data = await response.json();
+        let data = await response.text();
+        // Remove the JSONP callback wrapper
+        data = JSON.parse(data.replace(/^[^{]+{/, '{').replace(/}[^}]+$/, '}'));
+        console.log('Raw API response:', data);
         
-        // Fallback to São Paulo if we can't get the city
         if (!data.city) {
-            return {
-                city: 'São Paulo',
-                state: 'SP',
-                population: 12325232
-            };
+            console.log('No city in response, using fallback');
+            return getFallbackLocation();
         }
         
-        return {
+        const location = {
             city: data.city,
             state: data.region_code,
             population: getCityPopulation(data.city)
         };
+        
+        console.log('Returning location:', location);
+        return location;
     } catch (error) {
         console.error('Error fetching location:', error);
-        // Fallback to São Paulo on error
-        return {
-            city: 'São Paulo',
-            state: 'SP',
-            population: 12325232
-        };
+        return getFallbackLocation();
     }
+}
+
+function getFallbackLocation() {
+    return {
+        city: 'São Paulo',
+        state: 'SP',
+        population: 12325232
+    };
 }
 
 function getCityPopulation(city) {
