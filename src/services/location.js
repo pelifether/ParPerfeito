@@ -48,7 +48,9 @@ function getFallbackLocation() {
 }
 
 function getCityPopulation(city) {
+    // Population data from IBGE 2021 estimates
     const populations = {
+        // Top 10
         'São Paulo': 12325232,
         'Rio de Janeiro': 6747815,
         'Brasília': 3055149,
@@ -58,7 +60,30 @@ function getCityPopulation(city) {
         'Manaus': 2219580,
         'Curitiba': 1948626,
         'Recife': 1653461,
-        'Porto Alegre': 1484941
+        'Porto Alegre': 1484941,
+        
+        // 11-30
+        'Belém': 1499641,
+        'Goiânia': 1536097,
+        'Guarulhos': 1404694,
+        'Campinas': 1213792,
+        'São Luís': 1108975,
+        'São Gonçalo': 1091737,
+        'Maceió': 1025360,
+        'Duque de Caxias': 924624,
+        'Campo Grande': 916001,
+        'Natal': 890480,
+        'Teresina': 871126,
+        'São Bernardo do Campo': 844483,
+        'Nova Iguaçu': 823302,
+        'João Pessoa': 817511,
+        'Santo André': 723889,
+        'São José dos Campos': 721944,
+        'Osasco': 699944,
+        'Jaboatão dos Guararapes': 706867,
+        'Ribeirão Preto': 711825,
+        'Uberlândia': 699097
     };
-    return populations[city] || 2000000; // Default to 2 million if city not found
+    
+    return populations[city] || 100000; // Default to 100,000 if city not found
 }
