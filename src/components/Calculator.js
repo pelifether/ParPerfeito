@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InputPanel from './InputPanel';
 import ResultsPanel from './ResultsPanel';
+import AdBanner from './AdBanner';
 import { calculateMatches } from '../services/calculator';
 import { DEMOGRAPHICS } from '../data/demographics';
 
@@ -91,6 +92,16 @@ const Calculator = () => {
             onSubmit={() => setShowResults(true)}
           />
         </div>
+        
+        {/* Mobile Ad Banner */}
+        <div className="md:hidden w-full">
+          <AdBanner 
+            slot="1234567890"  // Replace with your actual ad slot ID
+            format="fluid"
+            className="my-4"
+          />
+        </div>
+        
         <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow">
           <ResultsPanel 
             results={results} 

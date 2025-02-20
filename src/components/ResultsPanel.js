@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getUserLocation } from '../services/location';
+import AdBanner from './AdBanner';
 
 const PresetCard = ({ image, title, subtitle, onClick }) => (
   <button
@@ -218,6 +219,15 @@ const ResultsPanel = ({ results, showResults, onPresetClick }) => {
                                     IBGE - Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD) 2023
                                 </a>
                             </p>
+
+                            {/* Desktop Ad Banner */}
+                            <div className="hidden md:block">
+                                <AdBanner 
+                                    slot="0987654321"  // Replace with your actual ad slot ID
+                                    format="auto"
+                                    className="mt-8"
+                                />
+                            </div>
                         </motion.div>
                         <HeartAnimation />
                     </>
