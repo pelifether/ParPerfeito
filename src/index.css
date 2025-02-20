@@ -17,11 +17,11 @@ code {
 }
 
 .page-title {
-    font-size: 3rem;  /* Reduced from 3.75rem (20% smaller) */
+    font-size: 3.4rem;  /* Reduced from 3.75rem (20% smaller) */
     font-weight: bold;
     text-align: center;
     color: #1f2937;  /* Gray-800 */
-    margin-bottom: 1rem;  /* Reduced from 2rem to 1rem */
+    margin-bottom: 1.4rem;  /* Reduced from 2rem to 1rem */
     max-width: 1280px;  /* Matches the max-width of the content */
     margin-left: auto;
     margin-right: auto;

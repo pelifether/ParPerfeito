@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getUserLocation } from '../services/location';
 
 const PresetCard = ({ image, title, subtitle, onClick }) => (
   <button
@@ -101,7 +102,42 @@ const formatPercentage = (percentage) => {
   return percentage.toFixed(decimals);
 };
 
+const CityResults = ({ percentage, cityData }) => {
+    console.log('CityResults props:', { percentage, cityData });  // Debug log
+    
+    if (!cityData?.population) {
+        console.log('No population data available');  // Debug log
+        return null;
+    }
+
+    const cityMatchCount = Math.round((cityData.population * percentage) / 100);
+    
+    return (
+        <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+            <p className="text-gray-600">
+                Na sua cidade, {cityData.city}-{cityData.state}, existem aprox.{' '}
+                <span className="font-semibold">{cityMatchCount.toLocaleString()}</span> pessoas 
+                que podem ser seu par ideal 📍
+            </p>
+        </div>
+    );
+};
+
 const ResultsPanel = ({ results, showResults, onPresetClick }) => {
+    const [cityData, setCityData] = useState(null);
+
+    useEffect(() => {
+        if (showResults && results) {
+            console.log('Fetching location data...');  // Debug log
+            getUserLocation().then(location => {
+                console.log('Location data received:', location);  // Debug log
+                if (location) {
+                    setCityData(location);
+                }
+            });
+        }
+    }, [showResults, results]);
+
   // Always show at least one person if there's any chance at all
   const filledCount = results.percentage > 0 
     ? Math.max(1, Math.round((results.percentage * 100) / 100))
@@ -147,8 +183,16 @@ const ResultsPanel = ({ results, showResults, onPresetClick }) => {
                 ))}
               </div>
               
-              <p className="text-xs text-gray-500 mt-8">
-                Fonte: IBGE - Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD) 2023
+              <p className="text-xs text-gray-500">
+                Fonte:{' '}
+                <a 
+                    href="https://www.ibge.gov.br/estatisticas/sociais/populacao/9171-pesquisa-nacional-por-amostra-de-domicilios-continua-mensal.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-gray-700"
+                >
+                    IBGE - Pesquisa Nacional por Amostra de Domicílios Contínua (PNAD) 2023
+                </a>
               </p>
             </motion.div>
             <HeartAnimation />

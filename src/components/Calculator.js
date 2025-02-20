@@ -82,8 +82,8 @@ const Calculator = () => {
   const results = calculateMatches(filters);
 
   return (
-    <div className="max-w-7xl mx-auto mt-8">
-      <div className="flex gap-6 flex-col md:flex-row">
+    <div className="max-w-7xl mx-auto">
+      <div className="flex gap-6 flex-col md:flex-row relative z-10">
         <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow">
           <InputPanel 
             filters={filters} 

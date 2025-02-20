@@ -38,11 +38,11 @@
 }
 
 .page-title {
-    font-size: 3rem;
+    font-size: 3.4rem;
     font-weight: bold;
     text-align: center;
     color: #1f2937;  /* Back to original dark gray */
-    margin-bottom: 1rem;
+    margin-bottom: 1.4rem;
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
