@@ -1,4 +1,5 @@
 import { DEMOGRAPHICS } from '../data/demographics';
+import { calculateHeightPercentile } from '../utils/heightDistribution';
 
 const getAgeGroupPercentage = (minAge, maxAge) => {
     let percentage = 0;
@@ -40,6 +41,20 @@ export function calculateMatches(filters) {
         const genderSum = filters.genders.reduce((sum, gender) => 
             sum + DEMOGRAPHICS.gender[gender], 0);
         matchPercentage *= genderSum;
+    }
+    
+    // Apply height filter
+    if (filters.height && filters.height.length === 2) {
+        const [minHeight, maxHeight] = filters.height;
+        const avgAge = (filters.age[0] + filters.age[1]) / 2;
+        const gender = filters.genders[0]; // Use first selected gender for height distribution
+        
+        if (minHeight && maxHeight) {
+            const minPercentile = calculateHeightPercentile(minHeight, avgAge, gender);
+            const maxPercentile = calculateHeightPercentile(maxHeight, avgAge, gender);
+            const heightPercentage = maxPercentile - minPercentile;
+            matchPercentage *= heightPercentage;
+        }
     }
     
     // Apply race filter

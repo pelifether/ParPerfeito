@@ -25,6 +25,7 @@ const RACES = [
 
 const InputPanel = ({ filters, onChange, onSubmit }) => {
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleCheckboxGroup = (name, value, isChecked) => {
     const currentValues = filters[name];
@@ -47,48 +48,64 @@ const InputPanel = ({ filters, onChange, onSubmit }) => {
     onChange(name, value);
   };
 
+  const handlePanelInteraction = () => {
+    if (!isActive) {
+      setIsActive(true);
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <div 
+      className="space-y-6" 
+      onClick={handlePanelInteraction}
+      onKeyDown={handlePanelInteraction}
+      onChange={handlePanelInteraction}
+    >
       <button
         onClick={onSubmit}
-        className={`w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all ${
-          hasInteracted ? 'opacity-100' : 'opacity-40'
-        }`}
+        className={`w-full py-3 px-4 text-white font-medium rounded-lg 
+          bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 
+          hover:opacity-90 transition-all duration-500
+          animate-gradient-x bg-[length:200%_100%]
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+          ${isActive ? 'opacity-100' : 'opacity-40'}`}
+        style={{
+          backgroundSize: '200% 100%',
+          animation: 'gradient 2s ease-in-out infinite'
+        }}
       >
-        Descubra 🔎
+        Descubra
       </button>
 
       <div>
-        <label className="block text-sm font-bold text-gray-700 mb-2">
-          Gênero
-        </label>
-        <div className="flex space-x-4">
-          <label className="flex items-center">
+        <div className="space-y-2">
+          <label className="inline-flex items-center mr-4">
             <input
               type="checkbox"
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+              className="form-checkbox text-blue-600"
               checked={filters.genders.includes('male')}
-              onChange={(e) => handleCheckboxGroup('genders', 'male', e.target.checked)}
+              onChange={(e) => {
+                const newGenders = e.target.checked
+                  ? [...filters.genders, 'male']
+                  : filters.genders.filter(g => g !== 'male');
+                onChange('genders', newGenders);
+              }}
             />
-            <span className="ml-2">Masculino</span>
+            <span className="ml-2">Homem</span>
           </label>
-          <label className="flex items-center">
+          <label className="inline-flex items-center">
             <input
               type="checkbox"
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+              className="form-checkbox text-blue-600"
               checked={filters.genders.includes('female')}
-              onChange={(e) => handleCheckboxGroup('genders', 'female', e.target.checked)}
+              onChange={(e) => {
+                const newGenders = e.target.checked
+                  ? [...filters.genders, 'female']
+                  : filters.genders.filter(g => g !== 'female');
+                onChange('genders', newGenders);
+              }}
             />
-            <span className="ml-2">Feminino</span>
-          </label>
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-              checked={filters.genders.includes('other')}
-              onChange={(e) => handleCheckboxGroup('genders', 'other', e.target.checked)}
-            />
-            <span className="ml-2">Outro</span>
+            <span className="ml-2">Mulher</span>
           </label>
         </div>
       </div>

@@ -168,9 +168,9 @@ const ResultsPanel = ({ results, showResults, onPresetClick }) => {
                             transition={{ duration: 0.5, delay: 1 }}
                             className="space-y-6"
                         >
-                            <div className="bg-blue-50 p-4 rounded-lg">
+                            <div className="bg-blue-50 p-6 rounded-lg mb-6">
                                 <p className="text-5xl font-bold text-blue-600">
-                                    {formatPercentage(results.percentage)}%
+                                    {results.percentage.toFixed(5)}%
                                 </p>
                                 <p className="text-gray-600">
                                     da população brasileira corresponde aos seus critérios

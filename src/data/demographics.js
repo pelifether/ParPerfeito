@@ -1,5 +1,5 @@
 export const DEMOGRAPHICS = {
-  total_population: 203700000,
+  total_population: 214300000,
   
   gender: {
     male: 0.485,
