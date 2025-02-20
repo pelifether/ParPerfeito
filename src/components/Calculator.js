@@ -44,6 +44,37 @@ const Calculator = () => {
         excludeUnemployed: false,
         excludeZodiacSigns: []
       });
+    } else if (presetName === 'india') {
+      setFilters({
+        genders: ['female'],
+        age: [65, 100],
+        height: [150, 170],
+        minIncome: 1000,
+        races: ['indigena'],
+        excludeMarried: true,
+        excludeUnemployed: false,
+        excludeZodiacSigns: ['virgem', 'cancer', 'gemeos', 'touro', 'aries', 'peixes', 'aquario', 'capricornio', 'sagitario', 'escorpiao', 'libra']
+      });
+    } else if (presetName === 'random') {
+      // Random selection of attributes
+      const randomGender = Math.random() < 0.5 ? ['male'] : ['female'];
+      const randomAgeMin = Math.floor(Math.random() * 40) + 18;
+      const randomAgeMax = randomAgeMin + Math.floor(Math.random() * 20) + 5;
+      const randomHeightMin = Math.floor(Math.random() * 30) + 150;
+      const randomHeightMax = randomHeightMin + Math.floor(Math.random() * 20) + 5;
+      const races = ['branca', 'preta', 'parda', 'amarela', 'indigena'];
+      const randomRace = [races[Math.floor(Math.random() * races.length)]];
+      
+      setFilters({
+        genders: randomGender,
+        age: [randomAgeMin, randomAgeMax],
+        height: [randomHeightMin, randomHeightMax],
+        minIncome: Math.floor(Math.random() * 29000) + 1000,
+        races: randomRace,
+        excludeMarried: Math.random() < 0.5,
+        excludeUnemployed: Math.random() < 0.5,
+        excludeZodiacSigns: []
+      });
     }
     setShowResults(true);
   };

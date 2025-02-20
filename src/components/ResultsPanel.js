@@ -44,16 +44,28 @@ const InitialState = ({ onPresetClick }) => (
     
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <PresetCard
-        image="./images/caua.jpg"
+        image="/images/caua.jpg"
         title="Quero um galã de novela moreno e alto"
         subtitle="Branco, acima de 1.80, rico"
         onClick={() => onPresetClick('caua')}
       />
       <PresetCard
-        image="./images/dani.jpg"
+        image="/images/dani.jpg"
         title="Busco uma mulher oriental mais velha"
         subtitle="Mulher, amarela, 40+"
         onClick={() => onPresetClick('dani')}
+      />
+      <PresetCard
+        image="/images/india.jpg"
+        title="Procuro uma índia idosa leonina"
+        subtitle="Indígena, 65+, leão"
+        onClick={() => onPresetClick('india')}
+      />
+      <PresetCard
+        image="/images/avatar.jpg"
+        title="Sugerir perfil - vai que o universo dá um sinal"
+        subtitle="Atributos selecionados pelo Cosmos"
+        onClick={() => onPresetClick('random')}
       />
     </div>
   </div>
